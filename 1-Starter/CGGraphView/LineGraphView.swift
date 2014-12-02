@@ -30,10 +30,4 @@ import UIKit
         maxValues = values.reduce(Int.min, { max($0, $1) })
         super.init(coder: aDecoder)
     }
-    
-    override func drawRect(rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0)
-        CGContextFillRect(context,  rect)
-    }
 }
