@@ -32,29 +32,23 @@ import UIKit
     }
     
     override func drawRect(rect: CGRect) {
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.roundingIncrement = 1000
-        let highLabel = numberFormatter.stringFromNumber(maxValues)!
-        let lowLabel = numberFormatter.stringFromNumber(minValues)!
-        drawBackgroundCanvas(frame: rect, highLabel: highLabel, lowLabel: lowLabel)
+        drawBackgroundCanvas(viewFrame: rect)
     }
     
-    func drawBackgroundCanvas(#frame: CGRect, highLabel: String, lowLabel: String) {
+    func drawBackgroundCanvas(#viewFrame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
         
         //// Color Declarations
-        let backGradientStart = UIColor(red: 0.217, green: 0.250, blue: 0.180, alpha: 1.000)
-        let backGradientEnd = UIColor(red: 0.477, green: 0.552, blue: 0.284, alpha: 1.000)
-        let gridLineColor = UIColor(red: 0.613, green: 0.613, blue: 0.613, alpha: 1.000)
-        let labelColor = UIColor(red: 0.839, green: 0.839, blue: 0.839, alpha: 1.000)
-        let color = UIColor(red: 0.676, green: 0.614, blue: 0.614, alpha: 0.617)
+        let backGradientStart = UIColor(red: 0.217, green: 0.251, blue: 0.181, alpha: 1.000)
+        let backGradientEnd = UIColor(red: 0.478, green: 0.553, blue: 0.286, alpha: 1.000)
+        let gridLineColor = UIColor(red: 0.652, green: 0.652, blue: 0.651, alpha: 1.000)
         
         //// Gradient Declarations
         let gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [backGradientEnd.CGColor, backGradientStart.CGColor], [0, 1])
         
         //// Rectangle Drawing
-        let rectangleRect = CGRectMake(frame.minX + floor(frame.width * 0.01875 + 0.5), frame.minY + floor(frame.height * 0.04455 + 0.5), floor(frame.width * 0.98125 + 0.5) - floor(frame.width * 0.01875 + 0.5), floor(frame.height * 0.95545 + 0.5) - floor(frame.height * 0.04455 + 0.5))
+        let rectangleRect = CGRectMake(viewFrame.minX + floor(viewFrame.width * 0.03125 + 0.5), viewFrame.minY + floor(viewFrame.height * 0.05000 + 0.5), floor(viewFrame.width * 0.96875 + 0.5) - floor(viewFrame.width * 0.03125 + 0.5), floor(viewFrame.height * 0.95000 + 0.5) - floor(viewFrame.height * 0.05000 + 0.5))
         let rectanglePath = UIBezierPath(roundedRect: rectangleRect, cornerRadius: 11)
         CGContextSaveGState(context)
         rectanglePath.addClip()
@@ -65,67 +59,40 @@ import UIKit
         CGContextRestoreGState(context)
         
         
-        //// highline Drawing
-        var highlinePath = UIBezierPath()
-        highlinePath.moveToPoint(CGPointMake(frame.minX + 0.05625 * frame.width, frame.minY + 41))
-        highlinePath.addLineToPoint(CGPointMake(frame.minX + 0.93437 * frame.width, frame.minY + 41))
+        //// topGridLine Drawing
+        var topGridLinePath = UIBezierPath()
+        topGridLinePath.moveToPoint(CGPointMake(viewFrame.minX + 0.09531 * viewFrame.width, viewFrame.minY + 0.20917 * viewFrame.height))
+        topGridLinePath.addCurveToPoint(CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.20917 * viewFrame.height), controlPoint1: CGPointMake(viewFrame.minX + 0.12344 * viewFrame.width, viewFrame.minY + 0.19417 * viewFrame.height), controlPoint2: CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.20917 * viewFrame.height))
         gridLineColor.setStroke()
-        highlinePath.lineWidth = 1
-        highlinePath.stroke()
+        topGridLinePath.lineWidth = 1
+        topGridLinePath.stroke()
         
         
-        //// lowline Drawing
-        var lowlinePath = UIBezierPath()
-        lowlinePath.moveToPoint(CGPointMake(frame.minX + 0.05625 * frame.width, frame.maxY - 35))
-        lowlinePath.addLineToPoint(CGPointMake(frame.minX + 0.93437 * frame.width, frame.maxY - 35))
+        //// midGridLine Drawing
+        var midGridLinePath = UIBezierPath()
+        midGridLinePath.moveToPoint(CGPointMake(viewFrame.minX + 0.09219 * viewFrame.width, viewFrame.minY + 0.50917 * viewFrame.height))
+        midGridLinePath.addCurveToPoint(CGPointMake(viewFrame.minX + 0.91094 * viewFrame.width, viewFrame.minY + 0.50917 * viewFrame.height), controlPoint1: CGPointMake(viewFrame.minX + 0.12031 * viewFrame.width, viewFrame.minY + 0.49417 * viewFrame.height), controlPoint2: CGPointMake(viewFrame.minX + 0.91094 * viewFrame.width, viewFrame.minY + 0.50917 * viewFrame.height))
         gridLineColor.setStroke()
-        lowlinePath.lineWidth = 1
-        lowlinePath.stroke()
-        
-        
-        //// midline Drawing
-        var midlinePath = UIBezierPath()
-        //This is special!
-        let midLineY = (frame.maxY - 35 + frame.minY + 41) / 2
-        midlinePath.moveToPoint(CGPointMake(frame.minX + 0.05625 * frame.width, midLineY))
-        midlinePath.addLineToPoint(CGPointMake(frame.minX + 0.93437 * frame.width, midLineY))
-        gridLineColor.setStroke()
-        midlinePath.lineWidth = 1
+        midGridLinePath.lineWidth = 1
         CGContextSaveGState(context)
-        CGContextSetLineDash(context, 0, [4, 6], 2)
-        midlinePath.stroke()
+        CGContextSetLineDash(context, 0, [4, 7], 2)
+        midGridLinePath.stroke()
         CGContextRestoreGState(context)
         
         
-        //// Text Drawing
-        let textRect = CGRectMake(frame.minX + floor((frame.width - 49) * 0.92251 + 0.5), frame.minY + 41, 49, 15)
-        let textStyle = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as NSMutableParagraphStyle
-        textStyle.alignment = NSTextAlignment.Right
-        
-        let textFontAttributes = [NSFontAttributeName: UIFont.systemFontOfSize(8), NSForegroundColorAttributeName: labelColor, NSParagraphStyleAttributeName: textStyle]
-        
-        let textTextHeight: CGFloat = NSString(string: highLabel).boundingRectWithSize(CGSizeMake(textRect.width, CGFloat.infinity), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: textFontAttributes, context: nil).size.height
-        CGContextSaveGState(context)
-        CGContextClipToRect(context, textRect);
-        NSString(string: highLabel).drawInRect(CGRectMake(textRect.minX, textRect.minY + (textRect.height - textTextHeight) / 2, textRect.width, textTextHeight), withAttributes: textFontAttributes)
-        CGContextRestoreGState(context)
+        //// bottomGridLine Drawing
+        var bottomGridLinePath = UIBezierPath()
+        bottomGridLinePath.moveToPoint(CGPointMake(viewFrame.minX + 0.09531 * viewFrame.width, viewFrame.minY + 0.80917 * viewFrame.height))
+        bottomGridLinePath.addCurveToPoint(CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.80917 * viewFrame.height), controlPoint1: CGPointMake(viewFrame.minX + 0.12344 * viewFrame.width, viewFrame.minY + 0.79417 * viewFrame.height), controlPoint2: CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.80917 * viewFrame.height))
+        gridLineColor.setStroke()
+        bottomGridLinePath.lineWidth = 1
+        bottomGridLinePath.stroke()
         
         
-        //// Text 2 Drawing
-        let text2Rect = CGRectMake(frame.minX + floor((frame.width - 49) * 0.92251 + 0.5), frame.minY + frame.height - 50, 49, 15)
-        let text2Style = NSMutableParagraphStyle.defaultParagraphStyle().mutableCopy() as NSMutableParagraphStyle
-        text2Style.alignment = NSTextAlignment.Right
-        
-        let text2FontAttributes = [NSFontAttributeName: UIFont.systemFontOfSize(8), NSForegroundColorAttributeName: labelColor, NSParagraphStyleAttributeName: text2Style]
-        
-        let text2TextHeight: CGFloat = NSString(string: lowLabel).boundingRectWithSize(CGSizeMake(text2Rect.width, CGFloat.infinity), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: text2FontAttributes, context: nil).size.height
-        CGContextSaveGState(context)
-        CGContextClipToRect(context, text2Rect);
-        NSString(string: lowLabel).drawInRect(CGRectMake(text2Rect.minX, text2Rect.minY + (text2Rect.height - text2TextHeight) / 2, text2Rect.width, text2TextHeight), withAttributes: text2FontAttributes)
-        CGContextRestoreGState(context)
-        
-        
-        //// graphRect Drawing
-        let graphRectPath = UIBezierPath(rect: CGRectMake(frame.minX + floor(frame.width * 0.05625 + 0.5), frame.minY + 55.5, floor(frame.width * 0.93437 + 0.5) - floor(frame.width * 0.05625 + 0.5), frame.height - 105))
+        //// lineGraphRect Drawing
+        let lineGraphRectPath = UIBezierPath(rect: CGRectMake(viewFrame.minX + floor(viewFrame.width * 0.09531) + 0.5, viewFrame.minY + floor(viewFrame.height * 0.25250) + 0.5, floor(viewFrame.width * 0.91406) - floor(viewFrame.width * 0.09531), floor(viewFrame.height * 0.76250) - floor(viewFrame.height * 0.25250)))
+        UIColor.lightGrayColor().setStroke()
+        lineGraphRectPath.lineWidth = 1
+        lineGraphRectPath.stroke()
     }
 }
