@@ -40,7 +40,7 @@
 		F2E78C431A283FB400C385FF /* CGGraphViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGGraphViewTests.swift; sourceTree = "<group>"; };
 		F2E78C4D1A283FD500C385FF /* LineGraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
 		F2E78C4F1A28408200C385FF /* Steps.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Steps.plist; sourceTree = "<group>"; };
-		F2EC6AFA1A2D96B600CA4CC1 /* CGPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CGPlayground.playground; sourceTree = "<group>"; };
+		F2EC6AFB1A2D976F00CA4CC1 /* CGPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CGPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +88,7 @@
 				F2E78C311A283FB400C385FF /* Main.storyboard */,
 				F2E78C341A283FB400C385FF /* Images.xcassets */,
 				F2E78C361A283FB400C385FF /* LaunchScreen.xib */,
-				F2EC6AFA1A2D96B600CA4CC1 /* CGPlayground.playground */,
+				F2EC6AFB1A2D976F00CA4CC1 /* CGPlayground.playground */,
 				F2E78C2B1A283FB400C385FF /* Supporting Files */,
 			);
 			path = CGGraphView;

@@ -31,68 +31,31 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    override func drawRect(rect: CGRect) {
-        drawBackgroundCanvas(viewFrame: rect)
+    override func drawRect(rect : CGRect ) {
+        drawGraphCanvas(canvasFrame: rect)
+        
     }
     
-    func drawBackgroundCanvas(#viewFrame: CGRect) {
+    func drawGraphCanvas(#canvasFrame: CGRect) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()
         
         //// Color Declarations
-        let backGradientStart = UIColor(red: 0.217, green: 0.251, blue: 0.181, alpha: 1.000)
-        let backGradientEnd = UIColor(red: 0.478, green: 0.553, blue: 0.286, alpha: 1.000)
-        let gridLineColor = UIColor(red: 0.652, green: 0.652, blue: 0.651, alpha: 1.000)
+        let backGradientEnd = UIColor(red: 0.217, green: 0.250, blue: 0.180, alpha: 1.000)
+        let backGradientStart = UIColor(red: 0.477, green: 0.552, blue: 0.284, alpha: 1.000)
         
         //// Gradient Declarations
-        let gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [backGradientEnd.CGColor, backGradientStart.CGColor], [0, 1])
+        let backGradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), [backGradientStart.CGColor, backGradientEnd.CGColor], [0, 1])
         
         //// Rectangle Drawing
-        let rectangleRect = CGRectMake(viewFrame.minX + floor(viewFrame.width * 0.03125 + 0.5), viewFrame.minY + floor(viewFrame.height * 0.05000 + 0.5), floor(viewFrame.width * 0.96875 + 0.5) - floor(viewFrame.width * 0.03125 + 0.5), floor(viewFrame.height * 0.95000 + 0.5) - floor(viewFrame.height * 0.05000 + 0.5))
+        let rectangleRect = CGRectMake(canvasFrame.minX + floor(canvasFrame.width * 0.03125 + 0.5), canvasFrame.minY + floor(canvasFrame.height * 0.05000 + 0.5), floor(canvasFrame.width * 0.96875 + 0.5) - floor(canvasFrame.width * 0.03125 + 0.5), floor(canvasFrame.height * 0.95000 + 0.5) - floor(canvasFrame.height * 0.05000 + 0.5))
         let rectanglePath = UIBezierPath(roundedRect: rectangleRect, cornerRadius: 11)
         CGContextSaveGState(context)
         rectanglePath.addClip()
-        CGContextDrawLinearGradient(context, gradient,
+        CGContextDrawLinearGradient(context, backGradient,
             CGPointMake(rectangleRect.midX, rectangleRect.minY),
             CGPointMake(rectangleRect.midX, rectangleRect.maxY),
             0)
         CGContextRestoreGState(context)
-        
-        
-        //// topGridLine Drawing
-        var topGridLinePath = UIBezierPath()
-        topGridLinePath.moveToPoint(CGPointMake(viewFrame.minX + 0.09531 * viewFrame.width, viewFrame.minY + 0.20917 * viewFrame.height))
-        topGridLinePath.addCurveToPoint(CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.20917 * viewFrame.height), controlPoint1: CGPointMake(viewFrame.minX + 0.12344 * viewFrame.width, viewFrame.minY + 0.19417 * viewFrame.height), controlPoint2: CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.20917 * viewFrame.height))
-        gridLineColor.setStroke()
-        topGridLinePath.lineWidth = 1
-        topGridLinePath.stroke()
-        
-        
-        //// midGridLine Drawing
-        var midGridLinePath = UIBezierPath()
-        midGridLinePath.moveToPoint(CGPointMake(viewFrame.minX + 0.09219 * viewFrame.width, viewFrame.minY + 0.50917 * viewFrame.height))
-        midGridLinePath.addCurveToPoint(CGPointMake(viewFrame.minX + 0.91094 * viewFrame.width, viewFrame.minY + 0.50917 * viewFrame.height), controlPoint1: CGPointMake(viewFrame.minX + 0.12031 * viewFrame.width, viewFrame.minY + 0.49417 * viewFrame.height), controlPoint2: CGPointMake(viewFrame.minX + 0.91094 * viewFrame.width, viewFrame.minY + 0.50917 * viewFrame.height))
-        gridLineColor.setStroke()
-        midGridLinePath.lineWidth = 1
-        CGContextSaveGState(context)
-        CGContextSetLineDash(context, 0, [4, 7], 2)
-        midGridLinePath.stroke()
-        CGContextRestoreGState(context)
-        
-        
-        //// bottomGridLine Drawing
-        var bottomGridLinePath = UIBezierPath()
-        bottomGridLinePath.moveToPoint(CGPointMake(viewFrame.minX + 0.09531 * viewFrame.width, viewFrame.minY + 0.80917 * viewFrame.height))
-        bottomGridLinePath.addCurveToPoint(CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.80917 * viewFrame.height), controlPoint1: CGPointMake(viewFrame.minX + 0.12344 * viewFrame.width, viewFrame.minY + 0.79417 * viewFrame.height), controlPoint2: CGPointMake(viewFrame.minX + 0.91406 * viewFrame.width, viewFrame.minY + 0.80917 * viewFrame.height))
-        gridLineColor.setStroke()
-        bottomGridLinePath.lineWidth = 1
-        bottomGridLinePath.stroke()
-        
-        
-        //// lineGraphRect Drawing
-        let lineGraphRectPath = UIBezierPath(rect: CGRectMake(viewFrame.minX + floor(viewFrame.width * 0.09531) + 0.5, viewFrame.minY + floor(viewFrame.height * 0.25250) + 0.5, floor(viewFrame.width * 0.91406) - floor(viewFrame.width * 0.09531), floor(viewFrame.height * 0.76250) - floor(viewFrame.height * 0.25250)))
-        UIColor.lightGrayColor().setStroke()
-        lineGraphRectPath.lineWidth = 1
-        lineGraphRectPath.stroke()
     }
 }
