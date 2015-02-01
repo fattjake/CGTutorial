@@ -12,33 +12,31 @@ The first step is to add grid lines to your graph. You will have three, a solid 
 
 ![](./3-LabImages/Lab1.png)
 
-Now that you have the line, make sure it’s selected. You can now adjust the start position and width so that it’s centered and the correct width. Set the x position to 30.5 and the width to 260. Also, set the resizing guides so that they are all squiggly.
+Now that you have the line, make sure it’s selected. Set the resizing guides so that they are all zig zag - this will make them resize correctly.
 
 ![](./3-LabImages/Lab2.png)
 
 You’ll notice when you do so, it will alter the code so that it uses a percentage of the frame size rather than a fixed coordinate.
 
-Note: You’ll notice that Paintcode always sets the position of the elements to half points.  A pixel coordinate is actually the boundary between pixels, so a position of 20 is between the 19th and 20th pixel. If you tell Core Graphics to draw in between pixels, it will draw a semi transparent line on the 19th and and 20th. If however, you draw on the 19.5th pixel, it will draw an opaque line on the 19th pixel.
-
-The next step is to give the line a color. You can just create a new color in the line stroke pane, but you’ll want to use this same color for all of your lines, so create the new color in the Colors box in the top left of the window by pressing the ‘+’ button.
+The next step is to give the line a color. You could just create a new color in the line stroke pane, but you’ll want to use this same color for all of your lines, so create the new color in the Colors box in the top left of the window by pressing the ‘+’ button.
 
 ![](./3-LabImages/Lab3.png)
 
-Give the color the name ‘gridLineColor’ and set the RGB components all to .652. 
+Give the color the name ‘gridLineColor’ and pick a color close to white. 
 
-You can see that Paintcode has added a new line in the code section:
-
-	let gridLineColor = UIColor(red: 0.652, green: 0.652, blue: 0.651, alpha: 1.000)
-
-Keep an eye on the code window as you make changes to the interface. This is a great way to learn about how to use the Core Graphics API.
-
-Next, drag the line from the color circle to your grid line and select ‘Stroke’.
+Next, select the line in the objects pane and set the stroke color by choosing gridLineColor from the dropdown list. 
 
 ![](./3-LabImages/Lab4.png)
 
-Now that you have one line, just copy and paste it twice (so you have three). In the upper right pane, name the top line ‘topGridLine’, the bottom one, ‘bottomGridLine’, and the middle line ‘midGridLine’.
+You can see that Paintcode has added a new line in the code section (your values may vary slightly):
 
-Using the position pane, position the top line at Y coordinate of 40.5, the middle one at 100.5, and the bottom one at 160.5.
+	let gridLineColor = UIColor(red: 0.919, green: 0.927, blue: 0.903, alpha: 1.000)
+
+Keep an eye on the code window as you make changes to the interface. This is a great way to learn about how to use the Core Graphics API. Note, that when you create a new color (or any of these types), it will only show up in the code once it has been attached to something that is drawn in the interface. 
+
+Now that you have one line, just copy and paste it twice (so you have three). Make sure to select the object first (the easiest way is to select it in the object view). In the upper right pane, name the top line ‘topGridLine’, the bottom one, ‘bottomGridLine’, and the middle line ‘midGridLine’.
+
+Drag the positions of the three lines around so they look about like this:
 
 ![](./3-LabImages/Lab5.png)
 
@@ -54,13 +52,11 @@ Use the rectangle tool to create a rectangle with the following dimensions:
 
 ![](./3-LabImages/Lab7.png)
 
-Change all the resizing options to variable (squiggly). Rename the path to lineGraphRect. Give it a stroke of any color (size and color don't matter here, but you need it to draw something or it won't generate code for it).
+Change all resizing options to variable (zig zag). Rename the path to lineGraphRect. Give it a stroke of any color (size and color don't matter here, but you need it to draw something or it won't generate code for it).
 
-You’ll remove the code that strokes the rectangle when you use this in your code. For now, copy and paste your entire method into Xcode (the drawGraphCanvas declaration and all).
+You’ll remove the code that strokes the rectangle when you use this in your code. For now, copy and paste your entire method into Xcode (the drawGraph declaration and all).
 
-You need to change the call in drawRect to include the parameter name (by default Paintcode writes a method that requires the parameter name). 
-
-drawGraphCanvas(viewFrame: rect)
+Note: If you are using the demo version of PaintCode you can get the code generated in the CopiedCode file. This is Lab Code v1
 
 Build and run now.
 
@@ -68,7 +64,7 @@ Build and run now.
 
 ## Add the Graph
 
-The next step is to add the graph (and remove the stroke around the rectangle). Remove these lines of code:
+The next step is to add the graph (and remove the stroke around the rectangle). Remove these lines of code (your code may vary slightly - these appear at the end):
 
 	UIColor.lightGrayColor().setStroke()
 	lineGraphRectPath.lineWidth = 1
@@ -76,7 +72,7 @@ The next step is to add the graph (and remove the stroke around the rectangle). 
 
 The current code creates a UIBezierPath variable using a supplied CGRect calculation. Change the name to lineGraphRect and remove the UIBezierPath initializer (leaving the CGRectMake intact), so you code looks like this:
 
-	let lineGraphRect = CGRectMake(canvasFrame.minX + floor(canvasFrame.width * 0.09844) + 0.5, canvasFrame.minY + floor(canvasFrame.height * 0.24250) + 0.5, floor(canvasFrame.width * 0.91094) - floor(canvasFrame.width * 0.09844), floor(canvasFrame.height * 0.75250) - floor(canvasFrame.height * 0.24250))
+	let lineGraphRect = CGRectMake(frame.minX + floor(frame.width * 0.09062 + 0.5), frame.minY + floor(frame.height * 0.20000 + 0.5), floor(frame.width * 0.89844) - floor(frame.width * 0.09062 + 0.5) + 0.5, floor(frame.height * 0.78000 + 0.5) - floor(frame.height * 0.20000 + 0.5))
 
 Then add this new line immediately following the Rect initializer:
 
@@ -88,7 +84,7 @@ Then add this method:
 	{
 	}
 
-The included class contains an array with a series of values representing step data for 31 days. The array is called values and there are two variables (maxValues and minValues) that contain the min and max of this data set.
+I've included a plist (called Steps.plist) file that represents a (fake) step count for 31 days. The included methods load this data into an array. The array is called values and there are two variables (maxValues and minValues) that contain the min and max of this data set. 
 
 You are going to use this information, and the supplied rectangle, to determine where to position each point on the graph.
 
@@ -102,7 +98,7 @@ Next, you’ll loop through all the items in values and calculate an X and Y pos
 	for i in 0..<values.count {
         let number = values[i]
 		//1
-        let normalizedScale = CGFloat(number - minValues) / CGFloat(valueDiff);
+        let normalizedScale = CGFloat(number - minValues) / CGFloat(valueDiff)
         //2
         let invertedValue = 1.0 - normalizedScale
         //3
@@ -129,7 +125,7 @@ If you are on the very first item in the array, you want to move into the first 
 
 The last step is to close the for loop and return the constructed Bezier path.
 
-    	}   
+    }   
 	return bezierPath
 
 Now that you have finished the method that creates the path, you are ready to draw it on your graph. Return to your previous place in the drawGraphCanvas method.
@@ -150,6 +146,9 @@ Add the following code to the end:
 1. The first step is to set the current color used for stroking paths to green.
 2. Next, you are saving the current state of the Core Graphics environment. 
 3. CGContextTranslateCTM is a call that sets a translation on the context. A translation moves the origin point from which all drawing is done. In this case, you are moving the start point right and down (from 0.0) to the origin point of the defined rectangle. 
+
+Note: This is just a way to break the drawing of the line graph into it's own drawing space. The rectangle passed into the generateBezierPathForGraph acts as though it's the entire drawing canvas. Then when you actually draw it, you need to move the origin point to the right spot in the overall coordinate space.
+
 4. Here’s the most important part, you stroke the path. This uses the color you just set.
 5. Finally, you restore the state, this puts the origin for drawing back to the default.
 
