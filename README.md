@@ -1,4 +1,4 @@
-## Beginning Core Graphics
+ ## Beginning Core Graphics
 #### Jacob Gundersen (*Podcaster, iOS 5-8 by Tutorials, iOS Games by Tutorials*)
 
 ###### Session: 205
